@@ -26,11 +26,13 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
   override func tearDown() {
     super.tearDown()
 
+    MDCTextInputControllerDefault.cornersRoundedDefault = [.topLeft, .topRight]
     MDCTextInputControllerDefault.errorColorDefault = nil
     MDCTextInputControllerDefault.inlinePlaceholderColorDefault = nil
     MDCTextInputControllerDefault.mdc_adjustsFontForContentSizeCategoryDefault = true
     MDCTextInputControllerDefault.activeColorDefault = nil
     MDCTextInputControllerDefault.normalColorDefault = nil
+    MDCTextInputControllerDefault.disabledColorDefault = nil
     MDCTextInputControllerDefault.underlineViewModeDefault = .whileEditing
     MDCTextInputControllerDefault.leadingUnderlineLabelTextColorDefault = nil
     MDCTextInputControllerDefault.trailingUnderlineLabelTextColorDefault = nil
@@ -44,6 +46,7 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
     MDCTextInputControllerFullWidth.mdc_adjustsFontForContentSizeCategoryDefault = true
     MDCTextInputControllerFullWidth.activeColorDefault = nil
     MDCTextInputControllerFullWidth.normalColorDefault = nil
+    MDCTextInputControllerFullWidth.disabledColorDefault = nil
     MDCTextInputControllerFullWidth.underlineViewModeDefault = .never
 
     MDCTextInputControllerFullWidth.leadingUnderlineLabelTextColorDefault = nil
@@ -76,6 +79,7 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
                    MDCPalette.blue.accent700)
     XCTAssertEqual(Float(MDCTextInputControllerDefault.floatingPlaceholderScaleDefault), 0.75)
     XCTAssertEqual(MDCTextInputControllerDefault.isFloatingEnabledDefault, true)
+    XCTAssertEqual(MDCTextInputControllerDefault.cornersRoundedDefault, [])
 
     // Test the use of the class properties.
     let textField = MDCTextField()
@@ -102,6 +106,7 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
                    MDCTextInputControllerDefault.floatingPlaceholderColorDefault)
     XCTAssertEqual(controller.isFloatingEnabled,
                    MDCTextInputControllerDefault.isFloatingEnabledDefault)
+    XCTAssertEqual(controller.cornersRounded, MDCTextInputControllerDefault.cornersRoundedDefault)
 
     // Test the changes to the class properties.
     MDCTextInputControllerDefault.errorColorDefault = .green
@@ -139,7 +144,10 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
     MDCTextInputControllerDefault.isFloatingEnabledDefault = false
     XCTAssertEqual(MDCTextInputControllerDefault.isFloatingEnabledDefault, false)
 
-    // Test the changes to the class properties can propogate to an instance.
+    MDCTextInputControllerDefault.cornersRoundedDefault = [.bottomRight]
+    XCTAssertEqual(MDCTextInputControllerDefault.cornersRoundedDefault, [.bottomRight])
+
+    // Test that the changes to the class properties can propogate to an instance.
     controller = MDCTextInputControllerDefault(textInput: textField)
 
     XCTAssertEqual(controller.errorColor, MDCTextInputControllerDefault.errorColorDefault)
@@ -163,6 +171,7 @@ class TextFieldControllerClassPropertiesTests: XCTestCase {
                    MDCTextInputControllerDefault.floatingPlaceholderColorDefault)
     XCTAssertEqual(controller.isFloatingEnabled,
                    MDCTextInputControllerDefault.isFloatingEnabledDefault)
+    XCTAssertEqual(controller.cornersRounded, MDCTextInputControllerDefault.cornersRoundedDefault)
   }
 
   func testFullWidth() {
