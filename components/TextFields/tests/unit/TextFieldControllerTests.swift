@@ -27,7 +27,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     let controller = MDCTextInputControllerDefault(textInput: textField)
     controller.characterCountMax = 49
     controller.characterCountViewMode = .always
-    controller.cornersRounded = [.bottomLeft, .bottomRight]
+    controller.roundedCorners = [.bottomLeft, .bottomRight]
     controller.disabledColor = .orange
     controller.isFloatingEnabled = false
     controller.floatingPlaceholderColor = .purple
@@ -45,7 +45,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     if let controllerCopy = controller.copy() as? MDCTextInputControllerDefault {
       XCTAssertEqual(controller.characterCountMax, controllerCopy.characterCountMax)
       XCTAssertEqual(controller.characterCountViewMode, controllerCopy.characterCountViewMode)
-      XCTAssertEqual(controller.cornersRounded, controllerCopy.cornersRounded)
+      XCTAssertEqual(controller.roundedCorners, controllerCopy.roundedCorners)
       XCTAssertEqual(controller.disabledColor, controllerCopy.disabledColor)
       XCTAssertEqual(controller.isFloatingEnabled, controllerCopy.isFloatingEnabled)
       XCTAssertEqual(controller.floatingPlaceholderColor, controllerCopy.floatingPlaceholderColor)
@@ -72,7 +72,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     let controller = MDCTextInputControllerFullWidth(textInput: textField)
     controller.characterCountMax = 49
     controller.characterCountViewMode = .always
-    controller.cornersRounded = [.bottomRight, .bottomLeft]
+    controller.roundedCorners = [.bottomRight, .bottomLeft]
     controller.disabledColor = .yellow
     controller.helperText = "Helper"
     controller.inlinePlaceholderColor = .green
@@ -84,7 +84,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     if let controllerCopy = controller.copy() as? MDCTextInputControllerFullWidth {
       XCTAssertEqual(controller.characterCountMax, controllerCopy.characterCountMax)
       XCTAssertEqual(controller.characterCountViewMode, controllerCopy.characterCountViewMode)
-      XCTAssertEqual(controller.cornersRounded, controllerCopy.cornersRounded)
+      XCTAssertEqual(controller.roundedCorners, controllerCopy.roundedCorners)
       XCTAssertEqual(controller.disabledColor, controllerCopy.disabledColor)
       XCTAssertEqual(controller.helperText, controllerCopy.helperText)
       XCTAssertEqual(controller.inlinePlaceholderColor, controllerCopy.inlinePlaceholderColor)
@@ -310,7 +310,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     let controller = MDCTextInputControllerDefault(textInput: textField)
     controller.characterCountMax = 25
     controller.characterCountViewMode = .always
-    controller.cornersRounded = .bottomRight
+    controller.roundedCorners = .bottomRight
     controller.disabledColor = .yellow
     controller.isFloatingEnabled = false
     controller.floatingPlaceholderColor = .purple
@@ -335,7 +335,7 @@ class TextFieldControllerDefaultTests: XCTestCase {
     XCTAssertEqual(controller.characterCountMax, unserializedController?.characterCountMax)
     XCTAssertEqual(controller.characterCountViewMode,
                    unserializedController?.characterCountViewMode)
-    XCTAssertEqual(controller.cornersRounded, unserializedController?.cornersRounded)
+    XCTAssertEqual(controller.roundedCorners, unserializedController?.roundedCorners)
     XCTAssertEqual(controller.disabledColor, unserializedController?.disabledColor)
     XCTAssertEqual(controller.isFloatingEnabled, unserializedController?.isFloatingEnabled)
     XCTAssertEqual(controller.floatingPlaceholderColor,
