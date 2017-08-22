@@ -55,10 +55,12 @@ static NSString *const MDCTextInputControllerLegacyFullWidthPresentationStyleKey
     @"MDCTextInputControllerLegacyFullWidthPresentationStyleKey";
 static NSString *const MDCTextInputControllerLegacyFullWidthTextInputKey =
     @"MDCTextInputControllerLegacyFullWidthTextInputKey";
+static NSString *const MDCTextInputControllerLegacyFullWidthTrailingUnderlineLabelTextColor =
+    @"MDCTextInputControllerLegacyFullWidthTrailingUnderlineLabelTextColor";
 
 static NSString *const MDCTextInputControllerLegacyFullWidthKVOKeyFont = @"font";
 
-static inline UIColor *MDCTextInputInlinePlaceholderTextColorDefault() {
+static inline UIColor *MDCTextInputLegacyFullWidthInlinePlaceholderTextColorDefault() {
   return [UIColor colorWithWhite:0 alpha:MDCTextInputLegacyFullWidthHintTextOpacity];
 }
 
@@ -69,8 +71,10 @@ static inline UIColor *MDCTextInputLegacyFullWidthTextErrorColorDefault() {
 #pragma mark - Class Properties
 
 static BOOL _mdc_adjustsFontForContentSizeCategoryDefault = YES;
+
 static UIColor *_errorColorDefault;
 static UIColor *_inlinePlaceholderColorDefault;
+static UIColor *_trailingUnderlineLabelTextColorDefault;
 
 @interface MDCTextInputControllerLegacyFullWidth () {
   BOOL _mdc_adjustsFontForContentSizeCategory;
@@ -79,6 +83,7 @@ static UIColor *_inlinePlaceholderColorDefault;
 
   UIColor *_errorColor;
   UIColor *_inlinePlaceholderColor;
+  UIColor *_trailingUnderlineLabelTextColor;
 }
 
 @property(nonatomic, assign, readonly) BOOL isDisplayingCharacterCountError;
@@ -213,7 +218,7 @@ static UIColor *_inlinePlaceholderColorDefault;
   // This controller will handle Dynamic Type and all fonts for the text input
   _mdc_adjustsFontForContentSizeCategory =
       _textInput.mdc_adjustsFontForContentSizeCategory ||
-      [[self class] mdc_adjustsFontForContentSizeCategoryDefault];
+  [self class].mdc_adjustsFontForContentSizeCategoryDefault;
   _textInput.mdc_adjustsFontForContentSizeCategory = NO;
   _textInput.positioningDelegate = self;
 
@@ -383,7 +388,7 @@ static UIColor *_inlinePlaceholderColorDefault;
     }
   }
 
-  UIColor *textColor = [[self class] inlinePlaceholderColorDefault];
+  UIColor *textColor = self.trailingUnderlineLabelTextColor;
 
   if (self.isDisplayingCharacterCountError || self.isDisplayingErrorText) {
     textColor = self.errorColor;
@@ -487,20 +492,28 @@ static UIColor *_inlinePlaceholderColorDefault;
   return [UIColor clearColor];
 }
 
+- (BOOL)isDisplayingCharacterCountError {
+  return self.characterCountMax && [self characterCount] > self.characterCountMax;
+}
+
+- (BOOL)isDisplayingErrorText {
+  return self.errorText != nil;
+}
+
 - (void)setErrorAccessibilityValue:(NSString *)errorAccessibilityValue {
   _errorAccessibilityValue = [errorAccessibilityValue copy];
 }
 
 - (UIColor *)errorColor {
   if (!_errorColor) {
-    _errorColor = [[self class] errorColorDefault];
+    _errorColor = [self class].errorColorDefault;
   }
   return _errorColor;
 }
 
 - (void)setErrorColor:(UIColor *)errorColor {
   if (![_errorColor isEqual:errorColor]) {
-    _errorColor = errorColor ? errorColor : [[self class] errorColorDefault];
+    _errorColor = errorColor ? errorColor : [self class].errorColorDefault;
     if (self.isDisplayingCharacterCountError || self.isDisplayingErrorText) {
       [self updateLeadingUnderlineLabel];
       [self updatePlaceholder];
@@ -553,12 +566,12 @@ static UIColor *_inlinePlaceholderColorDefault;
 
 - (UIColor *)inlinePlaceholderColor {
   return _inlinePlaceholderColor ? _inlinePlaceholderColor
-                                 : [[self class] inlinePlaceholderColorDefault];
+                                 : [self class].inlinePlaceholderColorDefault;
 }
 
 + (UIColor *)inlinePlaceholderColorDefault {
   if (!_inlinePlaceholderColorDefault) {
-    _inlinePlaceholderColorDefault = MDCTextInputInlinePlaceholderTextColorDefault();
+    _inlinePlaceholderColorDefault = MDCTextInputLegacyFullWidthInlinePlaceholderTextColorDefault();
   }
   return _inlinePlaceholderColorDefault;
 }
@@ -566,15 +579,25 @@ static UIColor *_inlinePlaceholderColorDefault;
 + (void)setInlinePlaceholderColorDefault:(UIColor *)inlinePlaceholderColorDefault {
   _inlinePlaceholderColorDefault = inlinePlaceholderColorDefault
                                        ? inlinePlaceholderColorDefault
-                                       : MDCTextInputInlinePlaceholderTextColorDefault();
+                                       : MDCTextInputLegacyFullWidthInlinePlaceholderTextColorDefault();
 }
 
-- (BOOL)isDisplayingCharacterCountError {
-  return self.characterCountMax && [self characterCount] > self.characterCountMax;
+// In This style, the leading underline is not shown. It would overlap the placeholder.
+- (UIColor *)leadingUnderlineLabelTextColor {
+  return [UIColor clearColor];
 }
 
-- (BOOL)isDisplayingErrorText {
-  return self.errorText != nil;
+- (void)setLeadingUnderlineLabelTextColor:(UIColor *)leadingUnderlineLabelTextColor {
+  // Not implemented. Leading underline label is always clear.
+}
+
+// In This style, the leading underline is not shown. It would overlap the placeholder.
++ (UIColor *)leadingUnderlineLabelTextColorDefault {
+  return [UIColor clearColor];
+}
+
++ (void)setLeadingUnderlineLabelTextColorDefault:(UIColor *)leadingUnderlineLabelTextColorDefault {
+  // Not implemented. Leading underline label is always clear.
 }
 
 - (void)setNormalColor:(UIColor *)normalColor {
@@ -609,6 +632,32 @@ static UIColor *_inlinePlaceholderColorDefault;
     _textInput = textInput;
     [self setupInput];
   }
+}
+
+- (UIColor *)trailingUnderlineLabelTextColor {
+  return _trailingUnderlineLabelTextColor ? _trailingUnderlineLabelTextColor :
+  [self class].trailingUnderlineLabelTextColorDefault;
+}
+
+- (void)setTrailingUnderlineLabelTextColor:(UIColor *)trailingUnderlineLabelTextColor {
+  if (_trailingUnderlineLabelTextColor != trailingUnderlineLabelTextColor) {
+    _trailingUnderlineLabelTextColor = trailingUnderlineLabelTextColor ? trailingUnderlineLabelTextColor :
+    [self class].trailingUnderlineLabelTextColorDefault;
+
+    [self updateTrailingUnderlineLabel];
+  }
+}
+
++ (UIColor *)trailingUnderlineLabelTextColorDefault {
+  if (!_trailingUnderlineLabelTextColorDefault) {
+    _trailingUnderlineLabelTextColorDefault = MDCTextInputLegacyFullWidthInlinePlaceholderTextColorDefault();
+  }
+  return _trailingUnderlineLabelTextColorDefault;
+}
+
++ (void)setTrailingUnderlineLabelTextColorDefault:(UIColor *)trailingUnderlineLabelTextColorDefault {
+  _trailingUnderlineLabelTextColorDefault = trailingUnderlineLabelTextColorDefault ?
+  trailingUnderlineLabelTextColorDefault : MDCTextInputLegacyFullWidthInlinePlaceholderTextColorDefault();
 }
 
 - (void)setUnderlineViewMode:(UITextFieldViewMode)underlineViewMode {
