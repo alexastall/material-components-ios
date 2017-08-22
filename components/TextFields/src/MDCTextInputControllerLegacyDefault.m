@@ -285,10 +285,10 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (void)commonMDCTextInputControllerDefaultInitialization {
   _characterCountViewMode = UITextFieldViewModeAlways;
-  _disabledColor = [[self class] disabledColorDefault];
-  _floatingEnabled = [[self class] isFloatingEnabledDefault];
+  _disabledColor = [self class].disabledColorDefault;
+  _floatingEnabled = [self class].isFloatingEnabledDefault;
   _internalCharacterCounter = [[MDCTextInputAllCharactersCounter alloc] init];
-  _underlineViewMode = [[self class] underlineViewModeDefault];
+  _underlineViewMode = [self class].underlineViewModeDefault;
   _textInput.hidesPlaceholderOnInput = NO;
 
   [self updatePlaceholderY];
@@ -302,7 +302,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
   // This controller will handle Dynamic Type and all fonts for the text input
   _mdc_adjustsFontForContentSizeCategory =
       _textInput.mdc_adjustsFontForContentSizeCategory ||
-      [[self class] mdc_adjustsFontForContentSizeCategoryDefault];
+      [self class].mdc_adjustsFontForContentSizeCategoryDefault;
   _textInput.mdc_adjustsFontForContentSizeCategory = NO;
   _textInput.positioningDelegate = self;
   _textInput.hidesPlaceholderOnInput = !self.isFloatingEnabled;
@@ -311,7 +311,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
   [self subscribeForNotifications];
   [self subscribeForKVO];
-  _textInput.underline.color = [[self class] normalColorDefault];
+  _textInput.underline.color = [self class].normalColorDefault;
   [self updatePlaceholderY];
 }
 
@@ -733,7 +733,6 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (void)setDisabledColor:(UIColor *)disabledColor {
   if (![_disabledColor isEqual:disabledColor]) {
-    _disabledColor = disabledColor ? disabledColor : [[self class] disabledColorDefault];
     _disabledColor = disabledColor ? disabledColor : [self class].disabledColorDefault;
     self.textInput.underline.disabledColor = disabledColor;
   }
