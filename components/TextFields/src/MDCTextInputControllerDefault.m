@@ -759,14 +759,14 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (UIColor *)borderFillColor {
   if (!_borderFillColor) {
-    _borderFillColor = [[self class] borderFillColorDefault];
+    _borderFillColor = [self class].borderFillColorDefault;
   }
   return _borderFillColor;
 }
 
 - (void)setBorderFillColor:(UIColor *)borderFillColor {
   if (_borderFillColor != borderFillColor) {
-    _borderFillColor = borderFillColor ? borderFillColor : [[self class] borderFillColorDefault];
+    _borderFillColor = borderFillColor ? borderFillColor : [self class].borderFillColorDefault;
     [self updateBorder];
   }
 }

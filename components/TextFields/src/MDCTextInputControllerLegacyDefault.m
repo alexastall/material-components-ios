@@ -624,7 +624,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
     }
   }
 
-  UIColor *textColor = [[self class] inlinePlaceholderColorDefault];
+  UIColor *textColor = self.trailingUnderlineLabelTextColor;
 
   if (self.isDisplayingCharacterCountError || self.isDisplayingErrorText) {
     textColor = self.errorColor;
@@ -726,7 +726,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (UIColor *)disabledColor {
   if (!_disabledColor) {
-    _disabledColor = [[self class] disabledColorDefault];
+    _disabledColor = [self class].disabledColorDefault;
   }
   return _disabledColor;
 }
@@ -734,6 +734,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 - (void)setDisabledColor:(UIColor *)disabledColor {
   if (![_disabledColor isEqual:disabledColor]) {
     _disabledColor = disabledColor ? disabledColor : [[self class] disabledColorDefault];
+    _disabledColor = disabledColor ? disabledColor : [self class].disabledColorDefault;
     self.textInput.underline.disabledColor = disabledColor;
   }
 }
@@ -756,14 +757,14 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (UIColor *)errorColor {
   if (!_errorColor) {
-    _errorColor = [[self class] errorColorDefault];
+    _errorColor = [self class].errorColorDefault;
   }
   return _errorColor;
 }
 
 - (void)setErrorColor:(UIColor *)errorColor {
   if (![_errorColor isEqual:errorColor]) {
-    _errorColor = errorColor ? errorColor : [[self class] errorColorDefault];
+    _errorColor = errorColor ? errorColor : [self class].errorColorDefault;
     if (self.isDisplayingCharacterCountError || self.isDisplayingErrorText) {
       [self updateLeadingUnderlineLabel];
       [self updatePlaceholder];
@@ -798,7 +799,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (UIColor *)floatingPlaceholderColor {
   return _floatingPlaceholderColor ? _floatingPlaceholderColor
-                                   : [[self class] floatingPlaceholderColorDefault];
+                                   : [self class].floatingPlaceholderColorDefault;
 }
 
 + (UIColor *)floatingPlaceholderColorDefault {
@@ -832,7 +833,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 - (NSNumber *)floatingPlaceholderScale {
   if (!_floatingPlaceholderScale) {
     _floatingPlaceholderScale =
-        [NSNumber numberWithFloat:(float)[[self class] floatingPlaceholderScaleDefault]];
+        [NSNumber numberWithFloat:(float)[self class].floatingPlaceholderScaleDefault];
   }
   return _floatingPlaceholderScale;
 }
@@ -842,7 +843,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
     _floatingPlaceholderScale =
         floatingPlaceholderScale
             ? floatingPlaceholderScale
-            : [NSNumber numberWithFloat:(float)[[self class] floatingPlaceholderScaleDefault]];
+            : [NSNumber numberWithFloat:(float)[self class].floatingPlaceholderScaleDefault];
 
     [self updatePlaceholder];
   }
@@ -884,7 +885,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
 
 - (UIColor *)inlinePlaceholderColor {
   return _inlinePlaceholderColor ? _inlinePlaceholderColor
-                                 : [[self class] inlinePlaceholderColorDefault];
+  : [self class].inlinePlaceholderColorDefault;
 }
 
 + (UIColor *)inlinePlaceholderColorDefault {
